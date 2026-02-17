@@ -4,7 +4,25 @@ propiedad: valor;
 */
 
 body {
-background-color: #da7ddf; /* Example background color */
-color:black; /* Example text color */
+    background-color: #FFFAE3;
+    /* Example background color */
+    color: #472B86;
+    /* Example text color */
+
+    font-family: "inclusive-sans", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 15px;
+    line-height: 1.5em;
+
+}
+
+h1 {
+    font-family: "futura-100", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 60px;
+    line-height: 5rem;
+    text-align: center;
 
 }
