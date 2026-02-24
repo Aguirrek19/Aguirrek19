@@ -2,27 +2,73 @@
 propiedad: valor;    
 }
 */
+:root {
+    --background-color: #FFFAE3;
+    --text-color: #472B86;
+    --font-family: "inclusive-sans", sans-serif;
+    --font-tile: "futura-100", sans-serif;
+    --acent-color: #92aaff;
+}
 
-body {
-    background-color: #FFFAE3;
-    /* Example background color */
-    color: #472B86;
-    /* Example text color */
-
-    font-family: "inclusive-sans", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 15px;
-    line-height: 1.5em;
+html {
+    font-size: 10px;
 
 }
 
-h1 {
-    font-family: "futura-100", sans-serif;
-    font-weight: 700;
-    font-style: normal;
-    font-size: 60px;
-    line-height: 5rem;
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 1.6em;
     text-align: center;
+}
 
+main {
+    margin: 0 auto;
+    padding: 5em 0;
+    max-width: 80ch;
+}
+h1, h2, h3 {
+    font-family: var(--font-tile);
+    text-transform: uppercase;
+}
+
+h1 {
+    font-size: 3em;
+}
+
+h2 {
+    font-size: 1.6em;
+}
+
+p {
+    max-width: 60ch;  
+}
+
+a {
+    border-radius: 10px;
+    text-align: center;
+    display: inline-block;
+    margin: 3em;
+    border: 5px solid var(--acent-color);
+    background-color: var(--acent-color);
+    color: var(--text-color);
+    width: 100px;
+    color: var(--text-color);
+    transition: all .5s ease-in-out; 
+}
+
+a:visited {
+    color: var(--acent-color);
+    opacity: 0.8;
+}
+
+a:focus {
+    color: var(--acent-color);
+    background-color: var(--text-color);
+}
+
+a:active {
+    color: var(--acent-color);
+    opacity: 0.8;
 }
