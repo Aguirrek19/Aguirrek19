@@ -10,23 +10,57 @@ propiedad: valor;
     --acent-color: #92aaff;
 }
 
-html {
-    font-size: 10px;
-
-}
-
 body {
-    background-color: var(--background-color);
+    /* background-color: var(--background-color);*/
+    background-image: url(../img/fondo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     color: var(--text-color);
     font-family: var(--font-family);
-    font-size: 1.6em;
+    font-size: 1.6rem;
     text-align: left;
 }
 
+html {
+    font-size: 100%;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+@media (min-width: 375px) {
+    html {
+        font-size: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 120%;
+    }
+}
+
+@media (min-width: 1920px) {
+
+    html {
+        font-size: 140%;
+
+    }
+}
+
+@media (min-width: 1920px) {
+    .hero {
+        background-image: url("fondo.jpg");
+    }
+
+}
+
 main {
-    margin: 0 auto;
-    padding: 5em 0;
-    max-width: 80ch;
+    width: 100%;
+    margin: 3rem auto;
+    padding: 3rem 0;
+    max-width: 840px;
 }
 
 h1,
@@ -37,11 +71,11 @@ h3 {
 }
 
 h1 {
-    font-size: 3em;
+    font-size: 3rem;
 }
 
 h2 {
-    font-size: 1.6em;
+    font-size: 1.6rem;
 }
 
 p {
@@ -52,8 +86,8 @@ a {
     border-radius: 10px;
     text-align: center;
     display: inline-block;
-    margin: 3em;
-    border: 5px solid var(--acent-color);
+    margin: 3rem;
+    border: 3rem solid var(--acent-color);
     background-color: var(--acent-color);
     color: var(--text-color);
     width: 100px;
