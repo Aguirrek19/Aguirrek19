@@ -4,9 +4,14 @@ propiedad: valor;
 */
 :root {
     --background-color: #FFFAE3;
-    --text-color: #472B86;
-    --font-family: "inclusive-sans", sans-serif;
+    --text-color: #efebdf;
+    /*--font-family: "inclusive-sans", sans-serif;
     --font-tile: "futura-100", sans-serif;
+    */
+    font-family: "fayte-pixel-hard", sans-serif;
+    --font-title: "fayte-pixel-hard", sans-serif;
+    font-weight: 500;
+    font-style: normal;
     --acent-color: #92aaff;
 }
 
@@ -60,26 +65,34 @@ main {
     width: 100%;
     margin: 3rem auto;
     padding: 3rem 0;
-    max-width: 840px;
-}
-
-h1,
-h2,
-h3 {
-    font-family: var(--font-tile);
-    text-transform: uppercase;
+    max-width: 500px;
 }
 
 h1 {
-    font-size: 3rem;
+    font-family: var(--font-tile);
+    text-transform: uppercase;
+    font-size: 5rem;
 }
 
 h2 {
+    font-family: "larabiefont", monospace;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.6rem;
+}
+h3 {
+    font-family: "larabiefont", monospace;
+    font-weight: 700;
+    font-style: italic;
     font-size: 1.6rem;
 }
 
 p {
     max-width: 60ch;
+    font-family: "larabiefont", monospace;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.6rem; 
 }
 
 a {
