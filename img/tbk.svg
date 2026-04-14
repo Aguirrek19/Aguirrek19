@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1142.23 979.38">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+        opacity: .55;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="581.89" y1="-107.44" x2="561.04" y2="1214.51" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#efebdf"/>
+      <stop offset=".14" stop-color="#e2dcd9"/>
+      <stop offset=".42" stop-color="#bfb5c9"/>
+      <stop offset=".8" stop-color="#8976b0"/>
+      <stop offset="1" stop-color="#6952a2"/>
+    </linearGradient>
+  </defs>
+  <g id="Morado">
+    <path class="cls-1" d="M1087.01,0H271.5c-30.5,0-55.22,23.64-55.22,52.81v66.33c0,29.16-24.72,52.81-55.22,52.81H55.22c-30.5,0-55.22,23.64-55.22,52.81v596.2c0,29.17,24.72,52.81,55.22,52.81h371.76c30.5,0,55.22,23.64,55.22,52.81h0c0,29.17,24.72,52.81,55.22,52.81h549.58c30.5,0,55.22-23.64,55.22-52.81V52.81c0-29.17-24.72-52.81-55.22-52.81Z"/>
+  </g>
+</svg>
