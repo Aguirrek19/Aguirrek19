@@ -140,18 +140,17 @@ a {
     border-radius: 10px;
     border: 0;
     text-align: center;
-    display: inline-block;
-    margin: 3rem;
-    border: 3rem solid var(--acent-color);
+    display: auto;
+    margin: auto;
+    border: auto solid var(--acent-color);
     background-color: var(--acent-color);
-    color: var(--text-color);
     width: 100px;
     color: var(--text-color);
     transition: all .5s ease-in-out;
 }
 
 a:visited {
-    color: var(--acent-color);
+    color: var(--text-color);
     opacity: 0.8;
 }
 
@@ -202,7 +201,7 @@ a:active {
 
 #bunny-3 {
     width: 140px;
-    bottom: 25%;
+    bottom: 20%;
     left: 80%;
 }
 
