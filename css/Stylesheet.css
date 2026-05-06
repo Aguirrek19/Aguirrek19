@@ -15,25 +15,298 @@ propiedad: valor;
     font-style: normal;
     --acent-color: #6952a285;
 }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none; /* evita selección accidental, mejora experiencia */
+    }
 
-body {
-    background-image: url(../img/fondo.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    color: var(--text-color);
-    font-family: var(--font-family);
-    font-size: 1.6rem;
-    text-align: left;
-    /*padding: 0;
-    margin: 0;
-    overflow: hidden; */
-}
+    <svg> xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 700 700" width="700" height="700"><defs><filter id="nnnoise-filter" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="linearRGB">
+	<feTurbulence type="turbulence" baseFrequency="0.191" numOctaves="4" seed="15" stitchTiles="stitch" x="0%" y="0%" width="100%" height="100%" result="turbulence"></feTurbulence>
+	<feSpecularLighting surfaceScale="5" specularConstant="3" specularExponent="20" lighting-color="#7957A8" x="0%" y="0%" width="100%" height="100%" in="turbulence" result="specularLighting">
+    		<feDistantLight azimuth="3" elevation="108"></feDistantLight>
+  	</feSpecularLighting>
+  
+   </filter></defs><rect width="700" height="700" fill="#ffffff00"></rect><rect width="700" height="700" fill="#7957a8" filter="url(#nnnoise-filter)">
+   </rect></svg>
+
+    body {
+      width: 100%;
+      min-height: 100vh;
+      background: #0a0a1a; /* fallback oscuro */
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* -------------------- FONDO PRINCIPAL: GRADIENTE RADIAL CON MORPHING DE COLORES -------------------- */
+    /* Se crea un fondo fijo que ocupa toda la pantalla.
+       Centro: azul claro (cielo / celeste)
+       Anillo medio: amarillo brillante (tono cálido)
+       Periferia: violeta / morado profundo.
+       Además se aplica una animación muy sutil de "morphing" al gradiente (cambia ligeramente el tamaño y posición del centro)
+       para dar sensación dinámica sin interferir con los círculos. */
+    .background-morph {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background: radial-gradient(circle at 50% 50%, 
+        #a0f0ff 0%,        /* azul claro centro */
+        #6cd3e5 18%,       /* mantiene azul claro en el núcleo */
+        #ffe066 25%,       /* amarillo aparece como un anillo brillante */
+        #ee9280 38%,       /* anillo amarillo */
+        #b77eff 55%,       /* transición a violeta */
+        #7c3aed 75%,       /* morado intenso */
+        #4c1d95 100%);     /* violeta oscuro en los bordes */
+      background-size: 200% 200%;
+      animation: slowBackgroundMorph 18s ease-in-out infinite alternate;
+    }
+
+    /* Animación para que el gradiente de fondo tenga un ligero "morphing" en su foco y tamaño */
+    @keyframes slowBackgroundMorph {
+      0% {
+        background-position: 0% 0%;
+        background-size: 100% 100%;
+      }
+      50% {
+        background-position: 10% 15%;
+        background-size: 120% 120%;
+      }
+      100% {
+        background-position: -5% -5%;
+        background-size: 110% 110%;
+      }
+    }
+
+    /* Capa adicional de nebulosa para dar profundidad al fondo (sutil) */
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at 40% 60%, rgba(90, 30, 150, 0.2), transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+      animation: pulseFog 12s infinite alternate;
+    }
+
+    @keyframes pulseFog {
+      0% { opacity: 0.3; }
+      100% { opacity: 0.7; }
+    }
+
+    /* -------------------- CONTENEDOR DE LOS CÍRCULOS MORPHING -------------------- */
+    /* El contenedor ocupa toda la pantalla, pero no captura eventos para que los círculos sean interactivos.
+       Los círculos tendrán pointer-events: auto para poder detectar el hover. */
+    .circles-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;     /* el wrapper no interfiere con el hover de círculos */
+      overflow: visible;
+      z-index: 10;
+      opacity: 0.9; /* ligera transparencia para que el fondo se vea a través de los círculos */
+    }
+
+    /* Estilo base de cada círculo: tamaño 15% del viewport (vmin = relativo al lado más pequeño)
+       Forma circular inicial, gradientes radiantes internos y sombras suaves.
+       Movimiento lento mediante animaciones personalizadas. */
+    .morph-circle {
+      position: absolute;
+      width: 50vmin;
+      height: 50vmin;
+      border-radius: 50%;
+      pointer-events: auto;      /* habilita la interacción hover */
+      cursor: pointer;
+      will-change: transform, border-radius, background;
+      transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1),
+                  border-radius 0.4s cubic-bezier(0.34, 1.2, 0.64, 1),
+                  background 0.3s ease,
+                  box-shadow 0.3s ease;
+      /* Sombras luminosas que refuerzan el efecto radiante */
+      box-shadow: 0 0 15px rgba(160, 240, 255, 0.4), 0 0 5px rgba(224, 134, 173, 0.421) transparent 50%;;
+      opacity: 0.9;
+      /* Gradiente interno por defecto: mezcla azul claro, amarillo y toque morado - efecto radiante */
+      background: radial-gradient(circle at 35% 35%, 
+        #b3e4ff, 
+        #b05e91, 
+        #cb9eff);
+        backdrop-filter: blur(200px);
+      background-size: 150% 150%;
+      animation: circleGlow 4s infinite alternate ease-in-out;
+    }
+
+    /* Pequeño brillo pulsante interno (morphing de luz) */
+    @keyframes circleGlow {
+      0% {
+        background-size: 100% 100%;
+        box-shadow: 0 0 5px rgba(160, 240, 255, 0.3);
+      }
+      100% {
+        background-size: 130% 130%;
+        box-shadow: 0 0 22px rgba(220, 160, 255, 0.6);
+      }
+    }
+
+    /* ----- DISTORSIÓN AL HOVER (MORPHING + DEFORMACIÓN) ----- */
+    /* Cuando el cursor pasa sobre cualquier círculo:
+       - Cambia de forma radical (border-radius asimétrico)
+       - Se escala y rota ligeramente
+       - Skew (sesgado) para sensación de "morphing"
+       - Gradiente interior se vuelve más vibrante
+       - Se detiene la animación de brillo base y adquiere una transición más dramática */
+    .morph-circle:hover {
+      transform: scale(1.45) rotate(8deg) skew(8deg, 5deg) translateY(-5px);
+      border-radius: 35% 65% 55% 45% / 45% 40% 60% 55%;
+      opacity: 0.95;
+      background: radial-gradient(circle at 25% 40%, 
+
+        #aaf0ff, 
+        #e5aae8, 
+        #eea390, 
+        #b77eff);
+        opacity: 0.95;
+      background-size: 180% 180%;
+      box-shadow: 0 0 35px rgba(200, 130, 255, 0.9), 0 0 20px rgba(255, 235, 100, 0.7) transparent 50%;
+      transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.6, 1.2), 
+        border-radius 0.8s ease, 
+        background 0.8s ease;
+      animation: hoverPulse 0.9s infinite alternate;
+    }
+
+    /* Pequeña animación extra durante el hover para un efecto de "vibración" suave */
+    @keyframes hoverPulse {
+      0% {
+        background-size: 150% 150%;
+        filter: brightness(1);
+      }
+      100% {
+        background-size: 190% 190%;
+        filter: brightness(1.1);
+      }
+    }
+
+    /* ----- ANIMACIONES DE MOVIMIENTO LENTO (personalizadas por cada círculo) ----- */
+    /* Cada circulo tiene una trayectoria única, duración larga (entre 22 y 32 segundos)
+       y se mueve por la pantalla suavemente, creando una coreografía etérea. */
+    
+    /* Círculo 1 - Se desplaza en arco y cambia altura */
+    @keyframes moveCircle1 {
+      0% { transform: translate(10vw, 0vh) rotate(0deg); }
+      20% { transform: translate(8vw, -4vh) rotate(3deg); }
+      40% { transform: translate(-3vw, 10vh) rotate(-2deg); }
+      60% { transform: translate(12vw, 10vh) rotate(5deg); }
+      80% { transform: translate(12vw, -12vh) rotate(-3deg); }
+      100% { transform: translate(10vw, 0vh) rotate(0deg); }
+    }
+    
+    /* Círculo 2 - más amplitud vertical y horizontal, rotación más pronunciada */
+    @keyframes moveCircle2 {
+      0% { transform: translate(10vw, 0vh) rotate(0deg); }
+      25% { transform: translate(-10vw, -6vh) rotate(-5deg); }
+      50% { transform: translate(5vw, 12vh) rotate(4deg); }
+      75% { transform: translate(-15vw, -2vh) rotate(-2deg); }
+      100% { transform: translate(0vw, 10vh) rotate(0deg); }
+    }
+    
+    /* Círculo 3 - movimiento ondulante en forma de "ocho" */
+    @keyframes moveCircle3 {
+      0% { transform: translate(0vw, 0vh) scale(1); }
+      33% { transform: translate(15vw, 8vh) scale(1.05); }
+      66% { transform: translate(-8vw, -5vh) scale(0.98); }
+      100% { transform: translate(0vw, 20vh) scale(1); }
+    }
+    
+    /* Círculo 4 - movimiento diagonal con pausas suaves */
+    @keyframes moveCircle4 {
+      0% { transform: translate(0vw, 0vh); }
+      30% { transform: translate(-7vw, -12vh); }
+      60% { transform: translate(12vw, 6vh); }
+      85% { transform: translate(3vw, -12vh); }
+      100% { transform: translate(10vw, 0vh); }
+    }
+
+    /* Asignación de posiciones iniciales (distintas áreas de la pantalla) 
+       y configuraciones de animación lenta, con duraciones e 'infinite alternate' 
+       para que el movimiento sea fluido y siempre cambiante. */
+    .circle-1 {
+      top: 15%;
+      left: 10%;
+      animation: moveCircle1 28s ease-in-out infinite alternate;
+      opacity: 0.9 ;
+      background: radial-gradient(circle at 30% 30%, #8fd6ff, #ce959b, #c792ff);
+    }
+    
+    .circle-2 {
+      top: 60%;
+      left: 75%;
+      opacity: 0.85;
+      animation: moveCircle2 32s ease-in-out infinite alternate;
+      background: radial-gradient(circle at 45% 60%, #a2e0ff, #ce959b, #c08eff);
+    }
+    
+    .circle-3 {
+      top: 75%;
+      left: 20%;
+      opacity: 0.8;
+      animation: moveCircle3 26s ease-in-out infinite alternate;
+      background: radial-gradient(circle at 55% 40%, #b5eaff,#ce959b, #e1aeff);
+    }
+    
+    .circle-4 {
+      top: 25%;
+      left: 80%;
+      opacity: 0.85;
+      animation: moveCircle4 30s ease-in-out infinite alternate;
+      background: radial-gradient(circle at 65% 25%, #97dcff, #ce959b, #be85ff);
+    }
+    
+    /* Pequeños detalles adicionales: ajuste para que en móviles no se salgan demasiado */
+    @media (max-width: 768px) {
+      .morph-circle {
+        width: 18vmin;
+        height: 18vmin;
+      }
+      .morph-circle:hover {
+        transform: scale(1.3) rotate(5deg) skew(5deg, 3deg);
+      }
+    }
+
+    /* Sección de contenido opcional para demostrar interactividad sobre el fondo, 
+       mejora la experiencia visual pero no interfiere con los círculos. */
+    .info-panel {
+      position: relative;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      pointer-events: none; /* para que los círculos reciban hover libremente */
+      padding: 2rem;
+      backdrop-filter: blur(400px);
+      background-color: rgba(15, 10, 30, 0.25);
+    }
+    
+    .badge {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      background: rgba(0,0,0,0.5);
+      border-radius: 30px;
+      padding: 0.4rem 1rem;
+      color: #ddd;
+    } 
 
 .card {
     background-color: var(--acent-color);
-    width: 60%;
+    width: 75%;
     height: 130%;
     margin: 5px;
     border: 15px var(--acent-color);
@@ -77,8 +350,8 @@ p {
 .item {
     background-color: var(--acent-color); 
     color: var(--text-color-p);
-    width: 100%;
-    height: 25%;
+    width: 140%;
+    height: 30%;
     margin: 5%;
     margin-top: 10%;
     padding: 1em;
@@ -98,7 +371,7 @@ html {
     box-sizing: inherit;
 }
 
-@media (min-width: 375px) {
+/*@media (min-width: 375px) {
     html {
         font-size: 80%;
     }
@@ -124,8 +397,10 @@ html {
     }
 
 }
-
+*/
 main {
+    position: relative;
+    z-index: 20;
     width: 100%;
     margin: 0;
     padding: 0;
